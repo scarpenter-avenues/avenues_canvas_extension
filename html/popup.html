@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Canvas Interactive Learning Mastery Gradebook</title>
+    <style>
+    body {
+      overflow: hidden;
+      margin: 10px;
+      margin-top: 0px;
+      padding: 5px;
+      width: 200px;
+    }
+
+    div:first-child {
+      margin-top: 0px;
+    }
+
+    div.link {
+      cursor: pointer;
+      padding: 3px 3px;
+      font-family: sans-serif;
+      font-size: 1em;
+      margin-top: 1px;
+    }
+    div.link:hover {
+      background: #aaaaaa;
+    }
+
+    #not{
+      margin-top: 10px;
+    }
+
+    </style>
+  </head>
+  <body>
+    <div id="not">This extension is only available from Canvas course pages.</div>
+    <div id="menu" hidden>
+      <h3>Avenues Canvas Tools</h3>
+      <div id="new-quick-assessment" class="link">Speed<u>ier</u>Grader</div><br>
+      <div><b>Course Reports</b></div>
+      <div id="print-outcome-report" class="link">Student Outcome Reports</div>
+      <div id="print-completion-report" class="link">Student Assignment Completion Reports</div>
+      <div id="assignment" hidden>
+        <hr>
+        <div><b>Assignment Reports</b></div>
+        <div id="print-rubrics" class="link">Assignment Rubrics</div>
+        <div id="print-assignment-report" class="link">Assignment Outcomes Report</div>
+      </div>
+    </div>
+    
+    
+  </body>
+  <script src="../js/popup.js"></script>
+</html>

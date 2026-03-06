@@ -1,0 +1,283 @@
+.not-bold {
+    font-weight: normal;
+}
+
+button{
+    -webkit-writing-mode: horizontal-tb !important;
+    -webkit-appearance: button;
+    background-color: #f0f0f0;
+    border-color: rgb(216, 216, 216) rgb(209, 209, 209) rgb(186, 186, 186);
+    border-style: solid;
+    border-width: 1px;
+    padding: 1px 7px 2px;
+    text-rendering: auto;
+    color: initial;
+    display: inline-block;
+    text-align: start;
+    margin: 0em;
+    font: 400 11px system-ui;
+    border-radius: 2px;
+    line-height: 24px;
+}
+
+/* Options Menu Style */
+
+#assignment_select{
+    width: 250px;
+}
+
+#assignment_title {
+    width: 200px;
+}
+
+#create_assignment, #publish, #unpublish {
+    margin-left: 30px;
+}
+
+button > div {
+    display: inline-flex;
+    vertical-align: middle;
+}
+
+button:hover{
+    cursor: pointer;
+}
+
+.publish-icon, .delete-icon {
+    font-size: 24px;
+    margin-right: 3px;
+}
+
+.publish-label{
+    align-self: center;
+}
+
+#publish:hover{
+    background-color: #0b874b;
+    color: white;
+    border-color: white;
+}
+
+#publish-clicked > .publish-icon {
+    color: #0b874b;
+}
+
+#unpublish{
+    background-color: #0b874b;
+    border-color: #0b874b;
+    color: white;
+}
+
+#unpublish:hover, #unpublish > .unpublish-clicked {
+    background-color: #f0f0f0;
+    color: initial;
+    border-color: rgb(216, 216, 216) rgb(209, 209, 209) rgb(186, 186, 186);
+}
+
+#delete_assignment:hover{
+    background-color: red;
+    color: white;
+    border-color: white;
+}
+
+
+/* Table Styles */
+
+#table-container {
+    max-height: 100vh; /* Set table height */
+    overflow: auto; /* Enable scrolling */
+    scrollbar-width: none; /* For Firefox */
+    -ms-overflow-style: none; /* For IE and Edge */
+}
+
+/* Hide scrollbar for Webkit-based browsers (Chrome, Safari) */
+.table-container::-webkit-scrollbar {
+    display: none;
+}
+
+#grade_table{
+    /* border-collapse: collapse; */
+    border: none;
+    border-spacing: 6px 2px;
+}
+
+#grade_table tr:nth-child(even) { 
+    background: white; 
+}
+
+#grade_table tr:nth-child(odd) { 
+    background: rgb(245, 245, 245); 
+}
+
+/* Sticky headers */
+th{
+    position: sticky;
+    top: 0;
+    background: white; /* Ensures header is visible */
+    z-index: 10; /* Keeps it above other elements */
+}
+
+/* Sticky First Column */
+th:first-child,
+td:first-child {
+    position: sticky;
+    left: 0;
+    background: inherit;
+    z-index: 20; /* Ensures it stays above table content */
+}
+
+/* Fix Overlapping of First Column Header */
+th:first-child {
+    z-index: 30; /* Highest priority to avoid being overlapped */
+}
+
+
+#grade_table th,td{
+    border: none;
+    border-color: rgb(51, 51, 51);
+    vertical-align: middle;
+    padding: 6px;
+}
+
+#grade_table th{
+    background-color: rgb(245, 245, 245);
+    text-align: left;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#grade_table th.outcome-header{
+    background-color: rgb(245, 245, 245);
+    min-width: 200px;
+    text-overflow: ellipsis;
+}
+
+#grade_table th#grade-header{
+    background-color: rgb(245, 245, 245);
+    width: 100px;
+    max-width: 100px;
+    text-overflow: ellipsis;
+}
+
+#grade_table td{
+    text-align: left;
+    vertical-align: top;
+    padding-left: 12px;
+}
+
+#section_select_td{
+    min-width: 150px;
+}
+
+#new_student_cell{
+    width: 150px;
+    border-right: 0px;
+}
+
+#add_outcome{
+    border-bottom: 0px !important;
+}
+
+
+.student-cell{
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: text-top;
+    font-size: 14px;
+}
+
+.hover-icon {
+    /* float: right; */
+    position: absolute;
+    top: 50%; /* Align to the top */
+    right: 6px; /* Align to the right */
+    transform: translate(0%, -50%);
+    cursor: pointer;
+}
+
+#student_select{
+    width: 17px;
+}
+
+#outcome_select{
+    width: 17px;
+}
+
+.grade-input{
+    accent-color: rgb(127, 127, 127);
+}
+
+.excused {
+    color: rgb(127, 127, 127);
+    cursor: default;
+}
+
+.submission-comment-div{
+    display: inline-grid;
+    vertical-align: top;
+    padding-left: 10px;
+}
+
+.submission-comment-div p{
+    margin-block-start: 0em;
+    margin-block-end: 0em;
+}
+
+.submission-comment-div p.comment-signature{
+    text-align: right   ;
+    font-size: smaller;
+    color: gray;
+    padding-bottom: 5px;
+}
+
+.comment-icon {
+    vertical-align: middle;
+    stroke-width: 0.1px;
+}
+
+.grade-cell input{
+    width: 20px;
+    margin-right: 5px;
+    text-align: center;
+}
+
+.grade-cell img{
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.grade-cell textarea, .submission-grade-cell textarea{
+    vertical-align: top;
+    height: 15.2px;;
+    width: 130px;
+    min-width: 130px;
+    max-width: 130px;
+    font-size: 10px;  
+    overflow-y: hidden;
+}
+
+.points.unsaved:focus{
+    border-color: red;
+    outline-color :red;
+}
+
+.comment-textarea.unsaved:focus{
+    border-color: red;
+    outline-color :red;
+}
+
+.grade-cell > .unsaved {
+    border-color: red;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.grade-cell .rubric-comment-div{
+    display: inline;
+}

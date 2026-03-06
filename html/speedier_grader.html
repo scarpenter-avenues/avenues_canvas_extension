@@ -1,0 +1,141 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Canvas Interactive Learning Mastery Gradebook</title>
+    <link rel="stylesheet" type="text/css" href="../css/speedier_grader.css">
+  </head>
+  <body>
+    <h1>Speed<u>ier</u>Grader</h1>
+    <h2 id="course_name"></h2>
+    <div id="loading">Loading course data...</div>
+    <form id="form" class="hidden">
+        <label for="assignment_select">Select an assignment</label>
+        <select id="assignment_select">
+            <option value="new">+ Create a new assignment</option>
+            <option id="loading_assignments">Loading assignments...</option>
+        </select>
+        <a id="speedgrader_link" class="hidden" target="_blank" href=""> Open in Speedgrader</a>
+        <br>
+        <br>
+        <fieldset id="new_assignment">
+            <legend>New Assignment</legend>
+            <label for="assignment_title">Title</label>
+            <input type="text" id="assignment_title"><br><br>
+            <label for="assignment_date">Date</label>
+            <input type="date" id="assignment_date"><br><br>
+            <button id="create_assignment">Create assignment</button>
+            <div id="assignment_buttons" class="hidden">
+                <button id="publish">
+                    <div id="publish-unclicked">
+                        <div class="publish-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-ban" viewBox="0 0 16 16">
+                                <path d="M15 8a6.97 6.97 0 0 0-1.71-4.584l-9.874 9.875A7 7 0 0 0 15 8M2.71 12.584l9.874-9.875a7 7 0 0 0-9.874 9.874ZM16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0"/>
+                            </svg>
+                        </div>
+                        <div class="publish-label">Publish</div>
+                    </div>
+                    <div id="publish-clicked" class="hidden">
+                        <div class="publish-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                            </svg>
+                        </div>
+                        <div class="publish-label">Publishing...</div>
+                    </div>
+                </button>
+
+                <button id="unpublish" class="hidden">
+                    <div id="unpublish-nohover">
+                        <div class="publish-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                            </svg>
+                        </div>
+                        <div class="publish-label">Published</div>
+                    </div>
+                    <div id="unpublish-hover" class="hidden">
+                        <div class="publish-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-ban" viewBox="0 0 16 16">
+                                <path d="M15 8a6.97 6.97 0 0 0-1.71-4.584l-9.874 9.875A7 7 0 0 0 15 8M2.71 12.584l9.874-9.875a7 7 0 0 0-9.874 9.874ZM16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0"/>
+                            </svg>
+                        </div>
+                        <div class="unpublish-label">Unpublish</div>
+                    </div>
+                    <div id="unpublish-clicked" class="hidden">
+                        <div class="publish-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-ban" viewBox="0 0 16 16">
+                                <path d="M15 8a6.97 6.97 0 0 0-1.71-4.584l-9.874 9.875A7 7 0 0 0 15 8M2.71 12.584l9.874-9.875a7 7 0 0 0-9.874 9.874ZM16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0"/>
+                            </svg>
+                        </div>
+                        <div class="unpublish-label">Unpublishing...</div>
+                    </div>
+                </button>
+
+                <button id="delete_assignment">
+                    <div id="delete-unclicked">
+                        <div class="delete-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                            </svg>
+                        </div>
+                        <div class="publish-label">Delete</div>
+                    </div>
+                    <div id="delete-clicked" class="hidden">
+                        <div class="delete-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                            </svg>
+                        </div>
+                        <div class="unpublish-label">Deleting...</div>
+                    </div>
+                </button>
+                
+            </div>
+
+        </fieldset>
+        
+        <br><br>
+        
+    </form>
+    
+    <div id="table-container">
+        <table id="grade_table" class="hidden">
+            <tr>
+                <th id="section_select_td">
+                    <label for="section_select">Show </label>
+                    <select id="section_select">
+                        <option value="all">All sections</option>
+                        <hr/>
+
+                    </select>
+                </th>
+                <th class="grade-header">Assignment grade<br/><span class="not-bold">(<span id="grade_type"></span>)</span></th>
+                <th id="add_outcome">
+                    <label for="outcome_select">Add outcome </label>
+                    <select id="outcome_select">
+                        <option value=""></option>
+                    </select>
+                </th>
+            </tr>
+            <tr id="new_student_row">
+                <td id="new_student_cell">
+                    <label for="student_select">Add student </label>
+                    <select id="student_select">
+                        <option value=""></option>
+                        <optgroup id="section_optgroup" label="Sections"></optgroup>
+                        <hr />
+                    </select>
+                </td>
+            </tr>
+        </table>
+        </body>
+    </div>
+    
+    <script type="text/javascript" src="../js/speedier_grader.js"></script>
+  </body>
+  
+  
+  
+</html>

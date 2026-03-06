@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Course Outcomes Report</title>
+	<link rel="stylesheet" type="text/css" href="../css/print_outcome_reports.css">
+</head>
+<body>
+	
+	<h2 id="loading">Loading outcome report for this course...</h2>
+
+	<form id="options-form" class="no-print" hidden>
+		<h2>Student Outcome Reports</h2>
+		<h3>Display Options</h3>
+		<div class="form-element"><input type="checkbox" id="show-outcome-reports" checked> Show outcome reports.</div>
+		<div class="form-element"><input type="checkbox" id="show-grade-reports" checked> Show grade reports.</div>
+		<div class="form-element"><input type="checkbox" id="show-description" checked> Show outcome description.</div>
+		<div class="form-element"><input type="checkbox" id="show-unscored" checked> Show unscored outcomes.</div>
+		<div class="form-element"><input type="checkbox" id="show-average" checked> Show outcome average.</div>
+		<div class="form-element"><input type="checkbox" id="show-assignments" checked> Show assignments.</div>
+		<div class="form-element"><input type="checkbox" id="show-comments" checked> Show rubric comments.</div>
+		<div class="form-element" id="sections-list">
+			<label>Show sections: </label>
+		</div>
+		<div class="form-element" id="student-select-container">
+			<label>Select student: </label>
+			<select id="student-select">
+				<option class="student-select" value="ALL">Show all students in selected section</option>
+			</select>
+		</div>
+		<p><b>Recent Assessments column width</b><br/><input type="range" min="150" max="900" value="300" class="slider" id="recent-assessments-width"></p>
+	</form>
+
+</body>
+<script type="text/javascript" src="../js/print_outcome_reports.js"></script>
+</html>

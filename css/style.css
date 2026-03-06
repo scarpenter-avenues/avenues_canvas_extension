@@ -1,0 +1,504 @@
+body {
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.outcome-gradebook{
+	display: none;
+}
+
+.outcome-table-wrapper { 
+    /* overflow-x: scroll;
+    overflow-y: auto;
+    */
+
+	display: flex;
+	margin-left: 300px;
+}
+
+.outcome-table-wrapper::-webkit-scrollbar-track { 
+	background: #f3f5f7;
+}
+
+.outcome-table-wrapper::-webkit-scrollbar-thumb  { 
+	box-shadow: none;
+}
+
+.outcome-table-wrapper .outcome-table {
+	display: inline-block;
+    width: 100%;
+    overflow: scroll;
+}
+
+.outcome-table{
+	border-collapse: collapse;
+	table-layout: fixed;
+}
+
+th, td {
+	height: 50px;
+	text-align: center;
+	border: 1px solid black;
+}
+
+.outcome-table-header-row {
+	background-color: #f1f1f1;
+	position: sticky;
+	top: 100px;
+	z-index: 2;
+}
+
+/* .outcome-table-header-row{
+	background: #f3f5f7;
+	height: 40px;
+	border-bottom: 1px solid #bbb;
+} */
+
+/* .outcome-table-header-row th div{
+	margin-top: 9px;
+} */
+
+ /* Lock first row at the top */
+ .outcome-table-header-row {
+	position: sticky;
+	top: 0;
+	transform-origin: left bottom;
+	white-space: nowrap;
+	height: 100px;
+	text-align: left;
+	z-index: 3;
+}
+
+.outcome-table-header-row th{
+	padding-top: 0px;
+	font-weight: bold;
+	text-shadow: white 0 0 1px;
+	font-size: .8125rem;
+	max-width: 105px;
+	text-align: left;
+}
+
+.outcome-table-header-row .outcome-result-header-cell{
+	transform: rotate(-45deg);
+}
+
+
+/* Lock first column on the left */
+/* .outcome-student-cell {
+	left: 0;
+	background-color: #e1e1e1;
+	z-index: 0;
+} */
+
+/* Ensure the inner table content scrolls */
+.scrollable-content {
+	overflow: auto;
+	max-height: 300px;
+}
+
+.outcome-result-header-cell{
+	width: 121px;
+	border: 1px solid #bbb;
+	cursor: pointer;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.outcome-student-header-cell{
+    position: absolute;
+    left: -232px;
+    width: 228px;
+	/* height: 96px; */
+	border: 1px solid #bbb;
+	overflow: hidden;
+	white-space: nowrap;
+	z-index: 4;
+}
+
+.outcome-student-cell{
+	position: absolute;
+    left: 61px;
+    width: 228px;
+	height: 38px;
+	margin-top: -1px;
+	text-align: left;
+	padding: 5px;
+	border: 1px solid #d3d9d9;
+	background: #fff;
+	z-index: 0;
+	vertical-align: middle;
+}
+
+.outcome-student-cell-content {
+	display: inline-flex;
+}
+
+.outcome-student-cell .avatar {
+	height: 30px;
+	width: 30px;
+	margin-right: 5px;
+	text-align: left;
+}
+
+.student-name{
+	padding: 5px;
+}
+
+.outcome-result-cell{
+	min-width: 90px;
+	height: 38px;
+	padding: 5px;
+	border-top: 1px solid #d3d9d9;
+	border-bottom: 1px solid #d3d9d9;
+	border-right: 1px solid #d3d9d9;
+	border-left: none;
+	background: #fff;
+	cursor: pointer;
+}
+.outcome-result-cell.selected{
+	background: rgb(235, 239, 242);
+}
+
+.outcome-result{
+	margin-left: 5px;
+}
+
+.outcome-result.no-mastery-data {
+    background: #fff;
+    border: 2px solid #aba;
+    width: 14px;
+    height: 14px;
+}
+
+.outcome-gradebook-sidebar.interactive{
+	height: 100%;
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    z-index: 1000;
+    overflow-y: scroll;
+	width: 360px;
+	overflow-x: hidden;
+}
+
+.outcome-gradebook-sidebar.interactive p{
+	margin-top: 2px;
+	margin-bottom: 2px;
+}
+
+.outcome-gradebook-sidebar-header.interactive{
+	position: sticky;
+	top: 0px;
+	width: 335px;
+	margin-bottom: 0px;
+	background: #ebeff2;
+	z-index: 1000;
+	padding-right: 0px;
+	padding-left: 0px;
+}
+.outcome-gradebook-sidebar-header.interactive h1{
+	font-size: 1.125rem;
+}
+
+.outcome-gradebook-sidebar-header.interactive ul{
+	margin-bottom: 0px;
+}
+
+.outcome-gradebook-sidebar-header.interactive .outcome-result{
+	height: 22px;
+	width: 22px;
+}
+
+.sidebar-close-icon{
+	position: absolute;
+	top: 0px;
+    left: 310px;
+    font-size: 2em;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.sidebar-name{
+	margin-right: 20px;
+}
+
+.outcome-description-link{
+	font-size: .875rem;
+}
+
+.sidebar-toggle{
+	width: 30px;
+	display: table-cell;
+}
+
+.sidebar-form{
+	padding-right: 10px;
+}
+
+#new-assessment-form .invalid{
+	border: 3px solid red;
+}
+
+#rubric{
+	table-layout: fixed;
+	width: 326px;
+	margin-bottom: 10px;
+}
+
+.rubric-cell{
+	padding-top: 3px;
+	padding-bottom: 3px;
+	padding-left: 3px;
+	padding-right: 3px;
+	border: 1px solid #c9d0d6;
+	line-height: 1em;
+	vertical-align: middle;
+}
+
+.rubric-selection{
+	cursor: pointer;
+}
+
+.rubric-selection.selected{
+	background: #cfa
+}
+
+.points-cell{
+	width: 60px;
+}
+
+.rubric-description{
+	font-size: 0.75em;
+}
+
+#assessment-points{
+	margin: 0px;
+}
+
+#assessment-points{
+	margin: 0px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	padding-right: 2px;
+	padding-left: 2px;
+}
+
+#new-assessment-form form{
+	display:table;
+	width:100%;
+	margin-bottom: 0px;
+	padding-top: 6px;
+}
+
+.outcome-gradebook-sidebar-content.interactive{
+	margin-right: 12px;
+	margin-left: 12px;
+	padding-left: 0px;
+    padding-right: 0px;
+}
+
+.outcome-gradebook-sidebar.interactive::-webkit-scrollbar-track-piece{
+	background: #ebeff2;
+}
+
+.outcome-gradebook-sidebar.interactive::-webkit-scrollbar-thumb{
+	box-shadow: none;
+}
+
+.assignment-row-table{
+	position: relative;
+	width: 100%;
+	display: table;
+}
+
+.assessment-edit-icons{
+	position: absolute;
+	top: 0px;
+    left: 293px;
+    font-size: 1.5em;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: right;
+    width: 41px;
+}
+
+.assignment-row h2{
+	font-size: 1.15em;
+	font-weight: bold;
+	margin-bottom: 2px;
+	margin-right: 45px;
+}
+
+.assignment-row h3{
+	font-size: .875em;
+	font-weight: lighter;
+	margin-top: 0px;
+	margin-bottom: 3px;
+	margin-right: 45px;
+}
+
+.assignment-row p{
+	font-size: .875em;
+	font-weight: lighter;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	font-style: italic;
+}
+
+.assignment-score-col{
+	width: 80px;
+	display: table-cell;
+}
+
+.assignment-comment-col{
+	display: table-cell;
+}
+
+#edit-assessment-title{
+	width: 100%;
+	font-size: 1em !important;
+    font-weight: bold !important;
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+    padding-left: 3px !important;
+    padding-right: 0px !important;
+    margin-bottom: 0px !important;
+    margin-left: -3px !important;
+}
+
+#edit-assessment-date{
+	width: 100%;
+	font-size: .875em;
+	font-weight: lighter;
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+    padding-left: 3px !important;
+    padding-right: 0px !important;
+    margin-bottom: 0px !important;
+    margin-left: -3px !important;
+}
+
+#edit-rubric{
+	margin-left: -80px;
+	margin-bottom: 6px;
+}
+
+#edit-assessment-comment{
+    width: 317px !important;
+    height: 5em !important;
+    font-style: italic;
+    margin-left: -80px !important;
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+    margin-bottom: 0px;
+}
+
+.assessment-update-buttons{
+	margin-top: 6px !important;
+	margin-bottom: 6px !important;
+	text-align: right;
+}
+
+.assessment-update-buttons button{
+	margin-left: 3px !important;
+	/*float: right !important;*/
+}
+
+
+.assignment-separator{
+	border-bottom: 1px solid #c9d0d6;
+	position: relative;
+	width: 100%;
+}
+
+#new-assignment-overlay{
+	top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    position: absolute;
+    z-index: 2000000000;
+    background: rgba(0,0,0,0.4);
+}
+
+.sidebar-form{
+	width: 100%;
+	position: relative;
+}
+
+#new-assignment-spinner{
+	position: absolute;
+	width: 0px;
+	z-index: 2000000000;
+	left: 50%;
+	top: 40%;
+	max-width: 100px;
+}
+
+.spinner-image-wrapper{
+	position: absolute; 
+	top: -2px; 
+	opacity: 0.25; 
+}
+
+.spinner-image{
+	position: absolute;
+	width: 12px;
+	height: 5px;
+	background: rgb(85, 85, 85);
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px;
+	transform-origin: left center 0px;
+	border-radius: 2px;
+}
+
+/* The Subscription Modal (background) */
+#subscription-modal {
+    display: none; /* Hidden by default */
+    position: absolute; /* Stay in place */
+    z-index: 10000; /* Sit on top */
+    right: 24px;
+    top: 6px;
+    width: 50%;
+    overflow: auto; /* Enable scroll if needed */
+}
+
+/* Modal Content/Box */
+#subscription-modal .modal-content {
+    background-color: rgb(250, 255, 140);
+    margin-top: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    border: 1px solid #888;
+}
+
+#subscription-modal p {
+	margin: 0px;
+	font-size: .8em;
+	padding-right: 15px;
+}
+
+/* The Close Button */
+#subscription-modal-close {
+    color: #aaa;
+    float: right;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+#subscription-modal-close:hover,
+#subscription-modal-close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.dp-below{
+    width: 215px;
+    height: 233px;
+}
+
+.dp{
+	height: 250px;
+}

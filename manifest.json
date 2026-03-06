@@ -1,0 +1,53 @@
+{
+    "name": "Avenues Canvas Extension",
+    "version": "5.0.3",
+    "description": "Teacher tools for Canvas including: printable outcome reports, assignment rubrics, and an interactive Learning Mastery gradebook.",
+    "manifest_version": 3,
+    "action": {
+		"default_icon": {
+			"16": "images/icon16.png",
+			"48": "images/icon48.png",
+			"128": "images/icon128.png" 
+		},
+    	"default_title": "Avenues Canvas Extension",
+		"default_popup": "html/popup.html"
+    },
+	"background": {
+    	"service_worker": "js/background.js"
+  	},
+    "content_scripts": [
+    	{
+	        "js": ["js/script.js"],
+	        "css": ["css/style.css"],
+	        "matches": ["https://*.instructure.com/courses/*/gradebook*"],
+			"run_at": "document_idle"
+	    },
+		{
+			"js": ["js/speedier_option.js"],
+			"matches": ["https://*.instructure.com/courses/*/assignments*"],
+			"run_at": "document_idle"
+		}
+	],
+    "web_accessible_resources": [
+		{
+			"resources": [
+				"js/*.js",
+    			"css/*.css"],
+			"matches": ["https://*.instructure.com/*"]
+		}
+		
+    ],
+    "permissions": [
+	    "tabs",
+		"cookies"
+	],
+	"host_permissions": [
+		"https://*.instructure.com/*"
+	],
+	"icons": { 
+		"16": "images/icon16.png",
+		"48": "images/icon48.png",
+	   "128": "images/icon128.png" 
+	}
+}
+

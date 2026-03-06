@@ -1,0 +1,133 @@
+@media print
+{    
+    .no-print, .no-print *
+    {
+        display: none !important;
+    }
+}
+
+body{
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+#options-form {
+	padding-bottom: 10px;
+	border-bottom: 2px solid black;
+}
+
+#options-form td {
+	padding-bottom: 2px;
+	padding-top: 2px;
+	padding-right: 4px;
+	padding-left: 4px;
+}
+
+#sections-list {
+	margin-top: 6px;
+}
+
+#student-select-container {
+	margin-top: 6px;
+}
+
+.outcome-table{
+	width: 800px;
+	border-collapse: collapse;
+}
+
+.outcome-table td, th{
+	vertical-align: top;
+	text-align: left;
+	border: 1px solid black;
+	padding: 3px;
+}
+
+.outcome-th, .outcome-title-cell{
+	width: 350px;
+}
+
+.score-th, .outcome-score{
+	width: 50px;
+	text-align: center !important;
+}
+
+.recent-assessments-th, .recent-assessments{
+	min-width: 300px;
+}
+
+.outcome-title{
+	font-size: 16px;
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+.outcome-description{
+	font-size: 10px;
+	min-width: 200px;
+}
+
+.outcome-score{
+	font-size: 16px;
+	font-weight: bolder;
+}
+
+.recent-assessments{
+	padding-top: 0px !important;
+}
+
+.assignment-table tr{
+	border: none;
+	text-overflow: ellipsis;
+	padding-top: 0px;
+}
+
+.assignment-table td{
+	border: none;
+	text-overflow: ellipsis;
+	font-size: 10px;
+}
+
+.assignment-score {
+	font-weight: bold;
+}
+
+.assignment-date {
+	font-style: italic;
+}
+
+.outcome-table{
+	page-break-after: always;
+}
+
+.student-name{
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.section-name{
+	font-size: 14px;
+}
+
+.assignment-score{
+	min-width: 10px;
+}
+
+.grades-table{
+	width: 800px;
+	border-collapse: collapse;
+}
+
+.grades-table td, th{
+	vertical-align: top;
+	text-align: left;
+	border: 1px solid black;
+	padding: 3px;
+}
+
+.grades-date{
+	width: 100px;
+}
+
+.missing{
+	color: red;
+}

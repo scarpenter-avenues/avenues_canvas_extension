@@ -1,0 +1,101 @@
+@media print
+{    
+    .no-print, .no-print *
+    {
+        display: none !important;
+    }
+}
+
+body {
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+#options-form {
+	padding-bottom: 10px;
+	border-bottom: 2px solid black;
+}
+
+#options-form td {
+	padding-bottom: 2px;
+	padding-top: 2px;
+	padding-right: 4px;
+	padding-left: 4px;
+}
+
+h1{
+	font-size: 14px;
+}
+
+h2{
+	font-size: 12px;
+}
+
+.rubric-row {
+	height: 30px;
+}
+
+.comment-th{
+	min-width: 150px;
+}
+
+.description{
+	font-size: 9px;
+}
+
+.ratings-points{
+	font-size: 9px;
+	color: #444444;
+}
+
+table {
+    border-collapse: collapse;
+    font-size: 11px;
+}
+
+table, th, td {
+    border: 1px solid black;
+	padding-left: .5em;
+	padding-right: .5em;
+}
+
+.ratings-table-container{
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+.ratings-table {
+    border-collapse: collapse;
+    border-style: hidden;
+}
+
+.ratings-table td, .ratings-table th {
+    border: 1px solid black;
+}
+
+
+
+.points{
+	text-align: center;
+}
+
+.highlight{
+	background: #cccccc;
+	-webkit-print-color-adjust: exact;
+}
+
+.add-comments{
+	page-break-after: always;
+}
+
+.student-name{
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.section-name{
+	font-size: 12px;
+}
+
+.left{
+	text-align: left;
+}
