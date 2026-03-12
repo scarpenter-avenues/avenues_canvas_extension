@@ -1,6 +1,6 @@
 {
     "name": "Avenues Canvas Extension",
-    "version": "5.0.3",
+    "version": "5.0.4",
     "description": "Teacher tools for Canvas including: printable outcome reports, assignment rubrics, and an interactive Learning Mastery gradebook.",
     "manifest_version": 3,
     "action": {
@@ -28,11 +28,13 @@
 			"run_at": "document_idle"
 		}
 	],
-    "web_accessible_resources": [
+	"web_accessible_resources": [
 		{
 			"resources": [
 				"js/*.js",
-    			"css/*.css"],
+    			"css/*.css",
+    			"html/speedier_grader.html",
+				"html/*.html"],
 			"matches": ["https://*.instructure.com/*"]
 		}
 		
@@ -50,4 +52,3 @@
 	   "128": "images/icon128.png" 
 	}
 }
-

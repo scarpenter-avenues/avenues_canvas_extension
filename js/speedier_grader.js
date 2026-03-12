@@ -593,10 +593,10 @@ async function loadSubmissions(assignment_id){
                 ASSIGNMENTS[assignment_id].rubric.forEach(criterion => {
                     if(submission.rubric_assessment && criterion.id in submission.rubric_assessment){
                         let grade_cell = document.getElementById(`${submission.user_id}_${criterion.outcome_id}`)
-                        if(submission.rubric_assessment[criterion.id].points){
+                        if(submission.rubric_assessment[criterion.id].points !== null && submission.rubric_assessment[criterion.id].points !== undefined){
                             grade_cell.querySelector(".points").value = submission.rubric_assessment[criterion.id].points;
                         }
-                        if(submission.rubric_assessment[criterion.id].comments && submission.rubric_assessment[criterion.id].comments.trim != ""){
+                        if(submission.rubric_assessment[criterion.id].comments && submission.rubric_assessment[criterion.id].comments.trim() != ""){
                             grade_cell.querySelector(".comment-textarea").value = submission.rubric_assessment[criterion.id].comments;
                             grade_cell.querySelector(".comment-icon").innerHTML = comment_icon_filled;
                         }
