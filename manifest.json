@@ -1,6 +1,6 @@
 {
     "name": "Avenues Canvas Extension",
-    "version": "5.0.4",
+    "version": "6.0.2",
     "description": "Teacher tools for Canvas including: printable outcome reports, assignment rubrics, and an interactive Learning Mastery gradebook.",
     "manifest_version": 3,
     "action": {

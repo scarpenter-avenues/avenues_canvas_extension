@@ -23,6 +23,7 @@ const SNIPPET_MIME = "application/x-speedier-snippet";
 let snippet_target = null; // last focused comment textarea
 let collapsed_snippet_groups = new Set();
 let snippet_tooltip = null;
+let snippet_sidebar_open = true;
 
 //Comment icons
 
@@ -1518,12 +1519,35 @@ function setSnippetSidebarWidth(width){
     document.documentElement.style.setProperty("--snippet-sidebar-width", `${Math.round(width)}px`);
 }
 
+// Hide/show the sidebar; the choice is remembered
+try {
+    snippet_sidebar_open = localStorage.getItem("snippet_sidebar_open") != "false";
+} catch (e) {}
+document.getElementById("snippet_hide").addEventListener("click", e => setSnippetSidebarOpen(false));
+document.getElementById("snippet_show").addEventListener("click", e => setSnippetSidebarOpen(true));
+
+function setSnippetSidebarOpen(open){
+    snippet_sidebar_open = open;
+    try {
+        localStorage.setItem("snippet_sidebar_open", open);
+    } catch (e) {}
+    hideSnippetTooltip();
+    updateSnippetSidebarVisibility();
+}
+
+// Returns whether the sidebar is available (an assignment is loaded)
+function updateSnippetSidebarVisibility(){
+    let available = !document.getElementById("grade_table").classList.contains("hidden");
+    let open = available && snippet_sidebar_open;
+    document.getElementById("snippet_sidebar").classList.toggle("hidden", !open);
+    document.getElementById("snippet_show").classList.toggle("hidden", !available || snippet_sidebar_open);
+    document.body.classList.toggle("has-snippet-sidebar", open);
+    return available;
+}
+
 function renderSnippets(){
-    let sidebar = document.getElementById("snippet_sidebar");
     let groups_div = document.getElementById("snippet_groups");
-    let show = !document.getElementById("grade_table").classList.contains("hidden");
-    sidebar.classList.toggle("hidden", !show);
-    document.body.classList.toggle("has-snippet-sidebar", show);
+    let show = updateSnippetSidebarVisibility();
     groups_div.innerHTML = "";
     hideSnippetTooltip();
     if(!show){
