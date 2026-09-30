@@ -18,6 +18,12 @@ let active_outcomes;
 let rubric_assessments;
 let ASSIGNMENTS = {};
 
+// Snippet sidebar state
+const SNIPPET_MIME = "application/x-speedier-snippet";
+let snippet_target = null; // last focused comment textarea
+let collapsed_snippet_groups = new Set();
+let snippet_tooltip = null;
+
 //Comment icons
 
 let comment_icon_filled = `
@@ -49,6 +55,13 @@ let dash_icon = `
             <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8"/>
         </svg>
     `
+
+let plus_icon = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+        </svg>
+    `
+
 
 
 getCourseData();
@@ -157,6 +170,7 @@ function setup(){
     document.getElementById("grade_table").querySelectorAll(".outcome-header").forEach(th => {
         th.remove();
     });
+    renderSnippets();
 
 }
 
@@ -582,6 +596,10 @@ async function loadSubmissions(assignment_id){
                     let comment_div = document.createElement("div");
                     comment_div.classList.add("comment-div");
                     comment_div.innerHTML = `<p>${comment.comment}</p><p class="comment-signature">${comment.author_name}, ${date_string}</p>`
+                    // Comments not written by the student can be reused as snippets
+                    if(comment.author_id != submission.user_id){
+                        comment_div.dataset.snippet = comment.comment;
+                    }
                     document.getElementById(`row_${submission.user_id}`).querySelector(".comment-textarea").before(comment_div);
                 });
                 document.getElementById(`row_${submission.user_id}`).querySelector(".submission-comment-icon").innerHTML = comment_icon_filled;
@@ -607,6 +625,7 @@ async function loadSubmissions(assignment_id){
                 });
             }
         })
+        renderSnippets();
 
     });
 
@@ -650,6 +669,7 @@ async function createAssignment(title, date){
             document.getElementById("assignment_buttons").classList.remove("hidden");
             document.getElementById("grade_type").innerHTML = "Complete/Incomplete";
             document.getElementById("grade_table").classList.remove("hidden");
+            renderSnippets();
             
             // PUBLISH UNPUBLISH BUTTONS
             document.getElementById("publish").addEventListener("click", e=> {  
@@ -786,6 +806,7 @@ function addOutcomeColumn(outcome){
         let student_row = document.getElementById(`row_${student_id}`);
         student_row.append(grade_cell);
     })
+    renderSnippets();
 }
 
 function newCommentToggler(parent, query){
@@ -1434,3 +1455,233 @@ function saveFocused(){
     }
     return null;
  }
+
+
+// SNIPPET SIDEBAR
+// Every rubric comment in the table becomes a snippet, grouped by outcome.
+// Snippets can be dragged into a comment box or added to the selected one with "+".
+
+document.addEventListener("focusin", e => {
+    if(e.target.classList.contains("comment-textarea")){
+        snippet_target = e.target;
+    }
+});
+
+document.addEventListener("input", e => {
+    if(e.target.classList.contains("comment-textarea")){
+        autoResize(e.target);
+    }
+});
+
+document.addEventListener("change", e => {
+    if(e.target.classList.contains("comment-textarea")){
+        renderSnippets();
+    }
+});
+
+// Only comment boxes accept snippet drops (not the points inputs)
+document.addEventListener("dragover", e => {
+    if(e.dataTransfer.types.includes(SNIPPET_MIME) && !e.target.classList.contains("comment-textarea")){
+        e.preventDefault();
+        e.dataTransfer.dropEffect = "none";
+    }
+});
+
+// Drag the sidebar's left edge to resize it; the width is remembered
+let snippet_resize_handle = document.getElementById("snippet_resize_handle");
+try {
+    let saved_width = parseInt(localStorage.getItem("snippet_sidebar_width"));
+    if(saved_width){
+        setSnippetSidebarWidth(saved_width);
+    }
+} catch (e) {}
+
+snippet_resize_handle.addEventListener("pointerdown", e => {
+    e.preventDefault();
+    snippet_resize_handle.setPointerCapture(e.pointerId);
+    document.body.classList.add("snippet-resizing");
+});
+snippet_resize_handle.addEventListener("pointermove", e => {
+    if(snippet_resize_handle.hasPointerCapture(e.pointerId)){
+        setSnippetSidebarWidth(window.innerWidth - e.clientX);
+    }
+});
+snippet_resize_handle.addEventListener("pointerup", e => {
+    document.body.classList.remove("snippet-resizing");
+    try {
+        localStorage.setItem("snippet_sidebar_width", parseInt(getComputedStyle(document.documentElement).getPropertyValue("--snippet-sidebar-width")));
+    } catch (e) {}
+});
+
+function setSnippetSidebarWidth(width){
+    width = Math.max(200, Math.min(width, 600, window.innerWidth * 0.7));
+    document.documentElement.style.setProperty("--snippet-sidebar-width", `${Math.round(width)}px`);
+}
+
+function renderSnippets(){
+    let sidebar = document.getElementById("snippet_sidebar");
+    let groups_div = document.getElementById("snippet_groups");
+    let show = !document.getElementById("grade_table").classList.contains("hidden");
+    sidebar.classList.toggle("hidden", !show);
+    document.body.classList.toggle("has-snippet-sidebar", show);
+    groups_div.innerHTML = "";
+    hideSnippetTooltip();
+    if(!show){
+        return;
+    }
+
+    // Submission comments: teacher comments already posted plus the new comment boxes
+    let submission_texts = [];
+    document.querySelectorAll(".submission-comment-div .comment-div[data-snippet]").forEach(comment_div => {
+        submission_texts.push(comment_div.dataset.snippet);
+    });
+    document.querySelectorAll(".submission-comment-div .comment-textarea").forEach(textarea => {
+        submission_texts.push(textarea.value);
+    });
+    groups_div.append(createSnippetGroup("submission", "Submission Comments", submission_texts));
+
+    active_outcomes.forEach(outcome_id => {
+        let texts = [];
+        document.querySelectorAll(`.grade-cell[id$="_${outcome_id}"] .comment-textarea`).forEach(textarea => {
+            texts.push(textarea.value);
+        });
+        groups_div.append(createSnippetGroup(outcome_id, outcomes[outcome_id].display_name, texts));
+    });
+}
+
+function createSnippetGroup(group_id, title, texts){
+    // Count each distinct comment so the most used ones are listed first
+    let counts = {};
+    texts.forEach(text => {
+        text = text.trim();
+        if(text != ""){
+            counts[text] = (counts[text] || 0) + 1;
+        }
+    });
+    let snippets = Object.keys(counts).sort((a, b) => counts[b] - counts[a] || a.localeCompare(b));
+
+    let group = document.createElement("details");
+    group.classList.add("snippet-group");
+    group.open = !collapsed_snippet_groups.has(group_id);
+    group.addEventListener("toggle", e => {
+        if(group.open){
+            collapsed_snippet_groups.delete(group_id);
+        }
+        else{
+            collapsed_snippet_groups.add(group_id);
+        }
+    });
+
+    let summary = document.createElement("summary");
+    summary.title = title;
+    let name = document.createElement("span");
+    name.classList.add("snippet-group-name");
+    name.innerText = title;
+    let count = document.createElement("span");
+    count.classList.add("snippet-count");
+    count.innerText = snippets.length;
+    summary.append(name, count);
+    group.append(summary);
+
+    let list = document.createElement("div");
+    list.classList.add("snippet-list");
+    if(snippets.length == 0){
+        let empty = document.createElement("div");
+        empty.classList.add("snippet-empty");
+        empty.innerText = "No comments yet";
+        list.append(empty);
+    }
+    snippets.forEach(text => {
+        list.append(createSnippetItem(text));
+    });
+    group.append(list);
+    return group;
+}
+
+function createSnippetItem(text){
+    let item = document.createElement("div");
+    item.classList.add("snippet-item");
+    item.draggable = true;
+
+    let add_button = document.createElement("button");
+    add_button.type = "button";
+    add_button.classList.add("snippet-add");
+    add_button.title = "Add to selected comment box";
+    add_button.innerHTML = plus_icon;
+    // Keep focus (and the caret) in the comment box while clicking
+    add_button.addEventListener("mousedown", e => e.preventDefault());
+    add_button.addEventListener("click", e => insertSnippet(text));
+    item.append(add_button);
+
+    let preview = document.createElement("span");
+    preview.classList.add("snippet-preview");
+    // textContent (not innerText) so line breaks collapse into the preview
+    preview.textContent = text;
+    item.append(preview);
+
+    item.addEventListener("dragstart", e => {
+        hideSnippetTooltip();
+        e.dataTransfer.setData(SNIPPET_MIME, "1");
+        e.dataTransfer.setData("text/plain", text);
+        e.dataTransfer.effectAllowed = "copy";
+    });
+
+    // Show the full comment when the preview is cut off
+    item.addEventListener("mouseenter", e => {
+        if(preview.scrollWidth > preview.clientWidth + 1 || preview.scrollHeight > preview.clientHeight + 1){
+            showSnippetTooltip(item, text);
+        }
+    });
+    item.addEventListener("mouseleave", hideSnippetTooltip);
+
+    return item;
+}
+
+function insertSnippet(text){
+    let textarea = snippet_target;
+    // offsetParent is null when the comment box is collapsed
+    if(!textarea || !textarea.isConnected || textarea.offsetParent === null){
+        let hint = document.getElementById("snippet_hint");
+        hint.classList.add("flash");
+        setTimeout(() => hint.classList.remove("flash"), 1200);
+        return;
+    }
+    textarea.focus();
+    let before = textarea.value.slice(0, textarea.selectionStart);
+    if(before != "" && !/\s$/.test(before)){
+        text = " " + text;
+    }
+    // execCommand keeps undo history and fires the input event
+    if(!document.execCommand("insertText", false, text)){
+        textarea.setRangeText(text, textarea.selectionStart, textarea.selectionEnd, "end");
+        textarea.dispatchEvent(new Event("input", { bubbles: true }));
+    }
+}
+
+function autoResize(textarea){
+    textarea.style.height = "1px";
+    textarea.style.height = (textarea.scrollHeight)+"px";
+}
+
+function showSnippetTooltip(item, text){
+    if(!snippet_tooltip){
+        snippet_tooltip = document.createElement("div");
+        snippet_tooltip.classList.add("snippet-tooltip");
+        document.body.append(snippet_tooltip);
+    }
+    snippet_tooltip.innerText = text;
+    snippet_tooltip.classList.remove("hidden");
+    // Place to the left of the sidebar, kept on screen
+    let rect = item.getBoundingClientRect();
+    let tooltip_rect = snippet_tooltip.getBoundingClientRect();
+    let left = Math.max(8, rect.left - tooltip_rect.width - 8);
+    let top = Math.max(8, Math.min(rect.top, window.innerHeight - tooltip_rect.height - 8));
+    snippet_tooltip.style.left = `${left}px`;
+    snippet_tooltip.style.top = `${top}px`;
+}
+
+function hideSnippetTooltip(){
+    if(snippet_tooltip){
+        snippet_tooltip.classList.add("hidden");
+    }
+}
